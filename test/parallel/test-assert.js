@@ -651,16 +651,20 @@ test('Test strict assert', () => {
 
   message = 'Expected values to be strictly deep-equal:\n' +
     '+ actual - expected\n' +
-    '... Skipped lines\n' +
     '\n' +
     '  [\n' +
     '    1,\n' +
+    '+   1,\n' +
     '    1,\n' +
-    '    1,\n' +
+    '-   1,\n' +
     '    0,\n' +
-    '...\n' +
-    '    1,\n' +
+    '+   1,\n' +
+    '+   1,\n' +
+    '+   1,\n' +
     '+   1\n' +
+    '-   1,\n' +
+    '-   1,\n' +
+    '-   1\n' +
     '  ]\n';
   strict.throws(
     () => strict.deepEqual(
@@ -734,12 +738,13 @@ test('Test strict assert', () => {
     '  [\n' +
     '    1,\n' +
     '+   2,\n' +
-    '    1,\n' +
+    '+   1,\n' +
     '    1,\n' +
     '-   1,\n' +
+    '-   1,\n' +
     '    0,\n' +
-    '    1,\n' +
-    '+   1\n' +
+    '+   1,\n' +
+    '    1\n' +
     '  ]\n';
   strict.throws(
     () => strict.deepEqual(
@@ -762,16 +767,15 @@ test('Test strict assert', () => {
     () => strict.deepEqual([1, 2, 1], undefined),
     { message });
 
-  message = [
-    start,
-    actExp,
-    '',
-    '  [',
-    '+   1,',
-    '    2,',
-    '    1',
-    '  ]\n',
-  ].join('\n');
+  message = 'Expected values to be strictly deep-equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    '  [\n' +
+    '-   2,\n' +
+    '    1,\n' +
+    '    2,\n' +
+    '+   1\n' +
+    '  ]\n';
   strict.throws(
     () => strict.deepEqual([1, 2, 1], [2, 1]),
     { message });
@@ -919,11 +923,7 @@ test('Additional asserts', () => {
     {
       code: 'ERR_ASSERTION',
       constructor: assert.AssertionError,
-      message: 'Expected values to be strictly equal:\n' +
-        '+ actual - expected\n' +
-        '\n' +
-        "+ 'string'\n" +
-        '- false\n'
+      message: 'Expected values to be strictly equal:\n\n\'string\' !== false\n'
     }
   );
 
@@ -935,11 +935,7 @@ test('Additional asserts', () => {
     {
       code: 'ERR_ASSERTION',
       constructor: assert.AssertionError,
-      message: 'Expected values to be strictly equal:\n' +
-        '+ actual - expected\n' +
-        '\n' +
-        "+ 'string'\n" +
-        '- false\n'
+      message: 'Expected values to be strictly equal:\n\n\'string\' !== false\n'
     }
   );
 
@@ -951,11 +947,7 @@ test('Additional asserts', () => {
   }, {
     code: 'ERR_ASSERTION',
     constructor: assert.AssertionError,
-    message: 'Expected values to be strictly equal:\n' +
-      '+ actual - expected\n' +
-      '\n' +
-      "+ 'string'\n" +
-      '- false\n'
+    message: 'Expected values to be strictly equal:\n\n\'string\' !== false\n'
     }
   );
   /* eslint-enable @stylistic/js/indent */

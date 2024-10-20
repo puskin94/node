@@ -112,14 +112,16 @@ test('deepEqual', () => {
       () => assert.deepStrictEqual(arr, arr2),
       {
         code: 'ERR_ASSERTION',
-        message: `${defaultMsgStartFull}\n\n` +
-                '  Uint8Array(4) [\n' +
-                '    120,\n' +
-                '    121,\n' +
-                '    122,\n' +
-                '    10,\n' +
-                '-   prop: 5\n' +
-                '  ]\n'
+        message: 'Expected values to be strictly deep-equal:\n' +
+          '+ actual - expected\n' +
+          '\n' +
+          '  Uint8Array(4) [\n' +
+          '    120,\n' +
+          '    121,\n' +
+          '    122,\n' +
+          '    10\n' +
+          '-   prop: 5\n' +
+          '  ]\n'
       }
     );
     assert.notDeepEqual(arr, arr2);
@@ -943,8 +945,13 @@ test('Having the same number of owned properties && the same set of keys', () =>
     {
       code: 'ERR_ASSERTION',
       name: 'AssertionError',
-      message: `${defaultMsgStartFull}\n\n  ` +
-              '{\n    a: 4,\n-   b: true\n  }\n'
+      message: 'Expected values to be strictly deep-equal:\n' +
+        '+ actual - expected\n' +
+        '\n' +
+        '  {\n' +
+        '    a: 4\n' +
+        '-   b: true\n' +
+        '  }\n'
     });
   assert.throws(
     () => assert.deepStrictEqual(['a'], { 0: 'a' }),
@@ -1021,8 +1028,14 @@ test('Check proxies', () => {
   util.inspect.defaultOptions = { showProxy: true };
   assert.throws(
     () => assert.deepStrictEqual(arrProxy, [1, 2, 3]),
-    { message: `${defaultMsgStartFull}\n\n` +
-               '  [\n    1,\n    2,\n-   3\n  ]\n' }
+    { message: 'Expected values to be strictly deep-equal:\n' +
+      '+ actual - expected\n' +
+      '\n' +
+      '  [\n' +
+      '    1,\n' +
+      '    2\n' +
+      '-   3\n' +
+      '  ]\n' }
   );
   util.inspect.defaultOptions = tmp;
 
@@ -1391,7 +1404,7 @@ test('Comparing two arrays nested inside object, with overlapping elements', () 
         '      b: [\n' +
         '+       1,\n' +
         '+       2,\n' +
-        '        3,\n' +
+        '        3\n' +
         '-       4,\n' +
         '-       5\n' +
         '      ]\n' +
@@ -1420,7 +1433,7 @@ test('Comparing two arrays nested inside object, with overlapping elements, swap
         '+       2,\n' +
         '-     b: 1,\n' +
         '-     c: [\n' +
-        '        3,\n' +
+        '        3\n' +
         '-       4,\n' +
         '-       5\n' +
         '      ],\n' +
@@ -1453,24 +1466,24 @@ test('Detects differences in deeply nested arrays instead of seeing a new object
       code: 'ERR_ASSERTION',
       name: 'AssertionError',
       message: 'Expected values to be strictly deep-equal:\n' +
-      '+ actual - expected\n' +
-      '... Skipped lines\n' +
-      '\n' +
-      '  [\n' +
-      '    {\n' +
-      '      a: 1\n' +
-      '    },\n' +
-      '    2,\n' +
-      '...\n' +
-      '      c: [\n' +
-      '+       1,\n' +
-      '+       2,\n' +
-      '        3,\n' +
-      '-       4,\n' +
-      '-       5\n' +
-      '      ]\n' +
-      '    }\n' +
-      '  ]\n'
+        '+ actual - expected\n' +
+        '... Skipped lines\n' +
+        '\n' +
+        '  [\n' +
+        '    {\n' +
+        '      a: 1\n' +
+        '    },\n' +
+        '    2,\n' +
+        '...\n' +
+        '      c: [\n' +
+        '+       1,\n' +
+        '+       2,\n' +
+        '        3\n' +
+        '-       4,\n' +
+        '-       5\n' +
+        '      ]\n' +
+        '    }\n' +
+        '  ]\n'
     }
   );
 });

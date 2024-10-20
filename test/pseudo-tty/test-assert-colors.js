@@ -14,9 +14,12 @@ assert.throws(() => {
     '\x1B[39m  [\n' +
     '\x1B[32m+\x1B[39m   1,\n' +
     '\x1B[39m    2,\n' +
-    '\x1B[39m    2,\n' +
-    '\x1B[39m    2,\n' +
-    '\x1B[39m    2,\n' +
+    '\x1B[32m+\x1B[39m   2,\n' +
+    '\x1B[32m+\x1B[39m   2,\n' +
+    '\x1B[32m+\x1B[39m   2\n' +
+    '\x1B[31m-\x1B[39m   2,\n' +
+    '\x1B[31m-\x1B[39m   2,\n' +
+    '\x1B[31m-\x1B[39m   2,\n' +
     '\x1B[31m-\x1B[39m   2\n' +
     '\x1B[39m  ]\n';
   assert.strictEqual(err.message, expected);
