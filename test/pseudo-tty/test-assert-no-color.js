@@ -13,10 +13,10 @@ assert.throws(
     message: 'Expected values to be strictly deep-equal:\n' +
       '+ actual - expected\n' +
       '\n' +
-      '+ {}\n' +
       '- {\n' +
       '-   foo: \'bar\'\n' +
-      '- }\n',
+      '- }\n' +
+      '+ {}\n'
   });
 
 {
@@ -28,9 +28,9 @@ assert.throws(
       message: 'Expected values to be partially and strictly deep-equal:\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ {}\n' +
         '- {\n' +
         "-   foo: 'bar'\n" +
-        '- }\n',
+        '- }\n' +
+        '+ {}\n'
     });
 }

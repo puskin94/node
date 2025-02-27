@@ -280,8 +280,8 @@ test('assert.throws()', () => {
       message: 'Expected "actual" to be reference-equal to "expected":\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ [Error: foo]\n' +
-        '- [Error: foobar]\n'
+        '- [Error: foobar]\n' +
+        '+ [Error: foo]\n',
     }
   );
 });
@@ -387,12 +387,12 @@ test('Test assertion messages', () => {
       message: 'Expected values to be strictly equal:\n' +
         '+ actual - expected\n' +
         '\n' +
+        "- ''\n" +
         '+ [\n' +
         '+   1,\n' +
         '+   2,\n' +
         '+   3\n' +
-        '+ ]\n' +
-        "- ''\n",
+        '+ ]\n',
       generatedMessage: true
     }
   );
@@ -403,11 +403,11 @@ test('Test assertion messages', () => {
       message: 'Expected values to be strictly equal:\n' +
         '+ actual - expected\n' +
         '\n' +
+        "- ''\n" +
         '+ <ref *1> {\n' +
         '+   x: [Circular *1],\n' +
         '+   y: 1\n' +
-        '+ }\n' +
-        "- ''\n",
+        '+ }\n',
       generatedMessage: true
     }
   );
@@ -418,11 +418,11 @@ test('Test assertion messages', () => {
       message: 'Expected values to be strictly equal:\n' +
         '+ actual - expected\n' +
         '\n' +
+        "- ''\n" +
         '+ {\n' +
         '+   a: undefined,\n' +
         '+   b: null\n' +
-        '+ }\n' +
-        "- ''\n",
+        '+ }\n',
       generatedMessage: true
     }
   );
@@ -433,12 +433,12 @@ test('Test assertion messages', () => {
       message: 'Expected values to be strictly equal:\n' +
         '+ actual - expected\n' +
         '\n' +
+        "- ''\n" +
         '+ {\n' +
         '+   a: NaN,\n' +
         '+   b: Infinity,\n' +
         '+   c: -Infinity\n' +
-        '+ }\n' +
-        "- ''\n",
+        '+ }\n',
       generatedMessage: true
     }
   );
@@ -638,8 +638,8 @@ test('Test strict assert', () => {
     '      [\n' +
     '        1,\n' +
     '        2,\n' +
-    '+       3\n' +
     "-       '3'\n" +
+    '+       3\n' +
     '      ]\n' +
     '    ],\n' +
     '    4,\n' +
@@ -651,15 +651,21 @@ test('Test strict assert', () => {
 
   message = 'Expected values to be strictly deep-equal:\n' +
     '+ actual - expected\n' +
-    '... Skipped lines\n' +
     '\n' +
     '  [\n' +
-    '    1,\n' +
-    '    1,\n' +
-    '    1,\n' +
+    '-   1,\n' +
+    '-   1,\n' +
+    '-   1,\n' +
+    '+   1,\n' +
+    '+   1,\n' +
+    '+   1,\n' +
     '    0,\n' +
-    '...\n' +
-    '    1,\n' +
+    '-   1,\n' +
+    '-   1,\n' +
+    '-   1\n' +
+    '+   1,\n' +
+    '+   1,\n' +
+    '+   1,\n' +
     '+   1\n' +
     '  ]\n';
   strict.throws(
@@ -677,8 +683,8 @@ test('Test strict assert', () => {
         '    3,\n' +
         '    4,\n' +
         '    5,\n' +
-        '+   6,\n' +
         '-   9,\n' +
+        '+   6,\n' +
         '    7\n' +
         '  ]\n';
 
@@ -697,8 +703,8 @@ test('Test strict assert', () => {
         '    4,\n' +
         '    5,\n' +
         '    6,\n' +
-        '+   7,\n' +
         '-   9,\n' +
+        '+   7,\n' +
         '    8\n' +
         '  ]\n';
 
@@ -718,8 +724,8 @@ test('Test strict assert', () => {
         '    4,\n' +
         '...\n' +
         '    7,\n' +
-        '+   8,\n' +
         '-   0,\n' +
+        '+   8,\n' +
         '    9\n' +
         '  ]\n';
 
@@ -732,13 +738,17 @@ test('Test strict assert', () => {
     '+ actual - expected\n' +
     '\n' +
     '  [\n' +
-    '    1,\n' +
-    '+   2,\n' +
-    '    1,\n' +
-    '    1,\n' +
     '-   1,\n' +
+    '-   1,\n' +
+    '-   1,\n' +
+    '-   1,\n' +
+    '+   1,\n' +
+    '+   2,\n' +
+    '+   1,\n' +
+    '+   1,\n' +
     '    0,\n' +
-    '    1,\n' +
+    '-   1\n' +
+    '+   1,\n' +
     '+   1\n' +
     '  ]\n';
   strict.throws(
@@ -751,12 +761,12 @@ test('Test strict assert', () => {
     start,
     actExp,
     '',
+    '- undefined',
     '+ [',
     '+   1,',
     '+   2,',
     '+   1',
-    '+ ]',
-    '- undefined\n',
+    '+ ]\n',
   ].join('\n');
   strict.throws(
     () => strict.deepEqual([1, 2, 1], undefined),
@@ -780,12 +790,12 @@ test('Test strict assert', () => {
   '+ actual - expected\n' +
       '\n' +
       '  [\n' +
-      '+   1,\n'.repeat(10) +
-      '+   3\n' +
       '-   2,\n'.repeat(11) +
       '-   4,\n' +
       '-   4,\n' +
       '-   4\n' +
+      '+   1,\n'.repeat(10) +
+      '+   3\n' +
       '  ]\n';
   strict.throws(
     () => strict.deepEqual([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4]),
@@ -796,14 +806,14 @@ test('Test strict assert', () => {
   obj2[inspect.custom] = () => '{}';
   // No infinite loop and no custom inspect.
   strict.throws(() => strict.deepEqual(obj1, obj2), {
-    message: `${start}\n` +
-    `${actExp}\n` +
-    '\n' +
-    '+ {}\n' +
-    '- {\n' +
-    '-   Symbol(nodejs.util.inspect.custom): [Function (anonymous)],\n' +
-    "-   loop: 'forever'\n" +
-    '- }\n'
+    message: 'Expected values to be strictly deep-equal:\n' +
+      '+ actual - expected\n' +
+      '\n' +
+      '- {\n' +
+      '-   Symbol(nodejs.util.inspect.custom): [Function (anonymous)],\n' +
+      "-   loop: 'forever'\n" +
+      '- }\n' +
+      '+ {}\n'
   });
 
   // notDeepEqual tests
@@ -1109,9 +1119,9 @@ test('Throws accepts objects', () => {
       name: 'AssertionError',
       message: `${start}\n${actExp}\n\n` +
                '  Comparison {\n' +
-               '+   code: 404,\n' +
                "-   code: '404',\n" +
                '-   foo: undefined,\n' +
+               '+   code: 404,\n' +
                "    message: 'Wrong value',\n" +
                "    name: 'TypeError'\n" +
                '  }\n'
@@ -1146,8 +1156,8 @@ test('Throws accepts objects', () => {
       message: `${start}\n${actExp}\n\n` +
                '  Comparison {\n' +
                "    message: 'e',\n" +
-               "+   name: 'TypeError'\n" +
                "-   name: 'Error'\n" +
+               "+   name: 'TypeError'\n" +
                '  }\n'
     }
   );
@@ -1159,8 +1169,8 @@ test('Throws accepts objects', () => {
       generatedMessage: true,
       message: `${start}\n${actExp}\n\n` +
                '  Comparison {\n' +
-               "+   message: 'foo',\n" +
                "-   message: '',\n" +
+               "+   message: 'foo',\n" +
                "    name: 'Error'\n" +
                '  }\n'
     }
@@ -1229,8 +1239,12 @@ test('Additional assert', () => {
       () => assert.strictEqual(args, { 0: 'a' }),
       {
         message: 'Expected "actual" to be reference-equal to "expected":\n' +
-                '+ actual - expected\n\n' +
-                "+ [Arguments] {\n- {\n    '0': 'a'\n  }\n"
+          '+ actual - expected\n' +
+          '\n' +
+          '- {\n' +
+          '+ [Arguments] {\n' +
+          "    '0': 'a'\n" +
+          '  }\n'
       }
     );
   }
@@ -1254,8 +1268,8 @@ test('Additional assert', () => {
     {
       message: `${start}\n${actExp}\n\n` +
               '  Comparison {\n' +
-              "+   message: 'foobar',\n" +
               '-   message: /fooa/,\n' +
+              "+   message: 'foobar',\n" +
               "    name: 'TypeError'\n" +
               '  }\n'
     }
@@ -1275,10 +1289,10 @@ test('Additional assert', () => {
         expected,
         generatedMessage: true,
         message: `${start}\n${actExp}\n\n` +
-                '+ null\n' +
-                '- {\n' +
-                "-   message: 'foo'\n" +
-                '- }\n'
+        '- {\n' +
+        "-   message: 'foo'\n" +
+        '- }\n' +
+        '+ null\n'
       }
     );
 
@@ -1292,7 +1306,7 @@ test('Additional assert', () => {
       ),
       {
         actual,
-        message: "message\n+ actual - expected\n\n+ 'foobar'\n- {\n-   message: 'foobar'\n- }\n",
+        message: "message\n+ actual - expected\n\n- {\n-   message: 'foobar'\n- }\n+ 'foobar'\n",
         operator: 'throws',
         generatedMessage: false
       }
@@ -1347,7 +1361,7 @@ test('Additional assert', () => {
     {
       code: 'ERR_ASSERTION',
       name: 'AssertionError',
-      message: 'custom message\n+ actual - expected\n\n  {\n+   a: true\n-   a: false\n  }\n'
+      message: 'custom message\n+ actual - expected\n\n  {\n-   a: false\n+   a: true\n  }\n'
     }
   );
 
@@ -1358,7 +1372,7 @@ test('Additional assert', () => {
     {
       code: 'ERR_ASSERTION',
       name: 'AssertionError',
-      message: 'custom message\n+ actual - expected\n\n  {\n+   a: true\n-   a: false\n  }\n'
+      message: 'custom message\n+ actual - expected\n\n  {\n-   a: false\n+   a: true\n  }\n'
     }
   );
 

@@ -73,8 +73,8 @@ test('deepEqual', () => {
       message: 'Expected values to be strictly deep-equal:\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ Uint8Array(4) [\n' +
         '- Buffer(4) [Uint8Array] [\n' +
+        '+ Uint8Array(4) [\n' +
         '    120,\n' +
         '    121,\n' +
         '    122,\n' +
@@ -132,18 +132,26 @@ test('date', () => {
     () => assert.deepStrictEqual(date, date2),
     {
       code: 'ERR_ASSERTION',
-      message: `${defaultMsgStartFull}\n\n` +
-              '+ 2016-01-01T00:00:00.000Z\n- MyDate 2016-01-01T00:00:00.000Z' +
-              " {\n-   '0': '1'\n- }\n"
+      message: 'Expected values to be strictly deep-equal:\n' +
+        '+ actual - expected\n' +
+        '\n' +
+        '- MyDate 2016-01-01T00:00:00.000Z {\n' +
+        "-   '0': '1'\n" +
+        '- }\n' +
+        '+ 2016-01-01T00:00:00.000Z\n'
     }
   );
   assert.throws(
     () => assert.deepStrictEqual(date2, date),
     {
       code: 'ERR_ASSERTION',
-      message: `${defaultMsgStartFull}\n\n` +
-              '+ MyDate 2016-01-01T00:00:00.000Z {\n' +
-              "+   '0': '1'\n+ }\n- 2016-01-01T00:00:00.000Z\n"
+      message: 'Expected values to be strictly deep-equal:\n' +
+        '+ actual - expected\n' +
+        '\n' +
+        '- 2016-01-01T00:00:00.000Z\n' +
+        '+ MyDate 2016-01-01T00:00:00.000Z {\n' +
+        "+   '0': '1'\n" +
+        '+ }\n'
     }
   );
 });
@@ -157,8 +165,13 @@ test('regexp', () => {
     () => assert.deepStrictEqual(re1, re2),
     {
       code: 'ERR_ASSERTION',
-      message: `${defaultMsgStartFull}\n\n` +
-              "+ /test/\n- MyRegExp /test/ {\n-   '0': '1'\n- }\n"
+      message: 'Expected values to be strictly deep-equal:\n' +
+        '+ actual - expected\n' +
+        '\n' +
+        '- MyRegExp /test/ {\n' +
+        "-   '0': '1'\n" +
+        '- }\n' +
+        '+ /test/\n'
     }
   );
 });
@@ -480,8 +493,13 @@ test('es6 Maps and Sets', () => {
       () => assert.deepStrictEqual(map1, map2),
       {
         code: 'ERR_ASSERTION',
-        message: `${defaultMsgStartFull}\n\n` +
-                 "  Map(1) {\n+   1 => 1\n-   1 => '1'\n  }\n"
+        message: 'Expected values to be strictly deep-equal:\n' +
+          '+ actual - expected\n' +
+          '\n' +
+          '  Map(1) {\n' +
+          "-   1 => '1'\n" +
+          '+   1 => 1\n' +
+          '  }\n'
       }
     );
   }
@@ -876,8 +894,8 @@ test('Additional tests', () => {
       message: 'Expected values to be strictly deep-equal:\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ /ab/\n' +
-        '- /a/\n'
+        '- /a/\n' +
+        '+ /ab/\n'
     });
   assert.throws(
     () => assert.deepStrictEqual(/a/g, /a/),
@@ -887,8 +905,8 @@ test('Additional tests', () => {
       message: 'Expected values to be strictly deep-equal:\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ /a/g\n' +
-        '- /a/\n'
+        '- /a/\n' +
+        '+ /a/g\n'
     });
   assert.throws(
     () => assert.deepStrictEqual(/a/i, /a/),
@@ -898,8 +916,8 @@ test('Additional tests', () => {
       message: 'Expected values to be strictly deep-equal:\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ /a/i\n' +
-        '- /a/\n'
+        '- /a/\n' +
+        '+ /a/i\n'
     });
   assert.throws(
     () => assert.deepStrictEqual(/a/m, /a/),
@@ -909,8 +927,8 @@ test('Additional tests', () => {
       message: 'Expected values to be strictly deep-equal:\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ /a/m\n' +
-        '- /a/\n'
+        '- /a/\n' +
+        '+ /a/m\n'
     });
   assert.throws(
     () => assert.deepStrictEqual(/aa/igm, /aa/im),
@@ -920,8 +938,8 @@ test('Additional tests', () => {
       message: 'Expected values to be strictly deep-equal:\n' +
         '+ actual - expected\n' +
         '\n' +
-        '+ /aa/gim\n' +
-        '- /aa/im\n'
+        '- /aa/im\n' +
+        '+ /aa/gim\n'
     });
 
   {
@@ -956,7 +974,13 @@ test('Having the same number of owned properties && the same set of keys', () =>
                 {
                   code: 'ERR_ASSERTION',
                   name: 'AssertionError',
-                  message: `${defaultMsgStartFull}\n\n  [\n+   4\n-   '4'\n  ]\n`
+                  message: 'Expected values to be strictly deep-equal:\n' +
+                    '+ actual - expected\n' +
+                    '\n' +
+                    '  [\n' +
+                    "-   '4'\n" +
+                    '+   4\n' +
+                    '  ]\n'
                 });
   assert.throws(
     () => assert.deepStrictEqual({ a: 4 }, { a: 4, b: true }),
@@ -971,8 +995,15 @@ test('Having the same number of owned properties && the same set of keys', () =>
     {
       code: 'ERR_ASSERTION',
       name: 'AssertionError',
-      message: `${defaultMsgStartFull}\n\n` +
-              "+ [\n+   'a'\n+ ]\n- {\n-   '0': 'a'\n- }\n"
+      message: 'Expected values to be strictly deep-equal:\n' +
+        '+ actual - expected\n' +
+        '\n' +
+        '- {\n' +
+        "-   '0': 'a'\n" +
+        '- }\n' +
+        '+ [\n' +
+        "+   'a'\n" +
+        '+ ]\n'
     });
 });
 
@@ -1019,16 +1050,16 @@ test('Check extra properties on errors', () => {
         '+ actual - expected\n' +
         '\n' +
         '  Comparison {\n' +
+        "-   message: '',\n" +
+        "-   operator: 'throws'\n" +
         "+   message: 'Expected values to be strictly deep-equal:\\n' +\n" +
         "+     '+ actual - expected\\n' +\n" +
         "+     '\\n' +\n" +
         "+     '  [TypeError: foo] {\\n' +\n" +
-        `+     "+   foo: 'bar'\\n" +\n` +
         `+     "-   foo: 'baz.'\\n" +\n` +
+        `+     "+   foo: 'bar'\\n" +\n` +
         "+     '  }\\n',\n" +
         "+   operator: 'deepStrictEqual'\n" +
-        "-   message: '',\n" +
-        "-   operator: 'throws'\n" +
         '  }\n'
     }
   );
@@ -1210,7 +1241,13 @@ test('Check getters', () => {
     {
       code: 'ERR_ASSERTION',
       name: 'AssertionError',
-      message: /a: \[Getter: 5]\n- {3}a: \[Getter: 6]\n {2}/
+      message: 'Expected values to be strictly deep-equal:\n' +
+        '+ actual - expected\n' +
+        '\n' +
+        '  {\n' +
+        '-   a: [Getter: 6]\n' +
+        '+   a: [Getter: 5]\n' +
+        '  }\n'
     }
   );
 
@@ -1435,11 +1472,11 @@ test('Comparing two arrays nested inside object, with overlapping elements, swap
         '\n' +
         '  {\n' +
         '    a: {\n' +
+        '-     b: 1,\n' +
+        '-     c: [\n' +
         '+     b: [\n' +
         '+       1,\n' +
         '+       2,\n' +
-        '-     b: 1,\n' +
-        '-     c: [\n' +
         '        3,\n' +
         '-       4,\n' +
         '-       5\n' +
